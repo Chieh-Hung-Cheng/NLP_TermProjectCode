@@ -29,6 +29,9 @@ class ProblemSetReader:
         python_code = self.get_python_code(idx)
 
         return (question, answer, python_code)
+    
+    def get_dataframe(self):
+        return self.dataframe
 
 if __name__ == "__main__":
     problem_set_reader = ProblemSetReader()
