@@ -7,17 +7,8 @@ class CodeGenAgent:
         self.tokenizer.pad_token = self.tokenizer.eos_token
         self.model = AutoModelForCausalLM.from_pretrained(checkpoint)
 
-
-    def generate(self, text, max_length=256, no_repeat_input=True):
-        input_ids = self.tokenizer(text, return_tensors="pt").input_ids
-        completion = self.model.generate(input_ids, 
-                                         max_length=512)
-        
-        decoded = self.tokenizer.decode(completion[0], skip_special_tokens=True)
-
-        return decoded
     
-    def batch_generate(self, texts, max_length=256, no_repeat_input=True):
+    def generate_batch(self, texts, max_length=256, no_repeat_input=True):
         tokenizer_out = self.tokenizer(texts, return_tensors="pt", padding=True, truncation=True)
         input_ids = tokenizer_out.input_ids
         attention_mask = tokenizer_out.attention_mask
