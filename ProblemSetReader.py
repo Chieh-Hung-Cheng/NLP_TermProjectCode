@@ -9,18 +9,19 @@ class ProblemSetReader:
         self.data_path = os.path.join(self.base_path, "data")
 
         self.dataframe = pd.read_pickle(os.path.join(self.data_path, "euler_df.pkl"))
-        self.available_indicies = set(self.dataframe["idx"])
+        self.available_indicies_set = set(self.dataframe["idx"])
+        self.available_indicies_list = sorted(list(self.available_indicies_set))
 
     def get_answer(self, idx):
-        assert idx in self.available_indicies
+        assert idx in self.available_indicies_set
         return self.dataframe[self.dataframe["idx"] == idx]["answer"].values[0]
     
     def get_question(self, idx):
-        assert idx in self.available_indicies
+        assert idx in self.available_indicies_set
         return self.dataframe[self.dataframe["idx"] == idx]["question"].values[0]
     
     def get_python_code(self, idx):
-        assert idx in self.available_indicies
+        assert idx in self.available_indicies_set
         return self.dataframe[self.dataframe["idx"] == idx]["python_code"].values[0]
     
     def get_problem_set(self, idx):
@@ -32,6 +33,12 @@ class ProblemSetReader:
     
     def get_dataframe(self):
         return self.dataframe
+    
+    def get_available_indicies_set(self):
+        return self.available_indicies_set
+    
+    def get_available_indicies_list(self):
+        return self.available_indicies_list
 
 if __name__ == "__main__":
     problem_set_reader = ProblemSetReader()
