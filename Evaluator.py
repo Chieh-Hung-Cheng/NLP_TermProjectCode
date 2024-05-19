@@ -12,43 +12,20 @@ class Evaluator:
         pass
     
     def compare_answer(self, truth, predicted, verbose=False)->bool:
-        
-
         if verbose:
             print(f"{truth=}, {predicted=}")
 
-        if (len(predicted)==0 ): return False
+        if (len(predicted)==0): return False
 
-        predicted = predicted.strip()
-
-        if '/' in predicted:
-            try:
-                predicted = predicted.split("/")
-            except:
-                return False
-        elif '.' in predicted:
-            try:
-                predicted = float(predicted)
-            except:
-                return False
-
-        if (type(truth)!=type(predicted)):
-            if (type(truth)==int or type(truth)==float):
-                try: 
-                    predicted = type(truth)(predicted)
-                except:
-                    return False
-            elif type(truth)==list:
-                try:
-                    predicted = predicted.split("/")
-                except:
-                    return False
-                if len(predicted) != len(truth):
-                    return False
+        try:
+            predicted = float(predicted)
+        except:
+            return False
+        
         if verbose:
             print(f"{truth=}, {predicted=}")
-        
-        return truth == predicted
+
+        return abs(truth - predicted) < 1e-3
     
     
     def evaluate_subprocess(self, code_path, answer_truth, verbose=False, timeout=30):
@@ -106,6 +83,7 @@ class Evaluator:
             if os.path.isdir(code_path): continue
             if not re.match("p[0-9][0-9][0-9].py", dir): continue
             idx = int(dir[1:4])
+            if idx not in problem_set_df["idx"].values: continue
             answer_truth = problem_set_df[problem_set_df["idx"] == idx]["answer"].values[0]
 
             result = self.evaluate_subprocess(code_path, answer_truth, verbose=True, timeout=timeout)

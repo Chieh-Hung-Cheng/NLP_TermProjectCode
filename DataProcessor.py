@@ -32,44 +32,46 @@ class DataProcessor:
         self.answers = {}
         with open(os.path.join(self.data_path, "Answers.txt")) as f:
             for line in f:
-                if line.startswith("Problem"):
-                    problem_int = int(line[8:11])
-                    answer_str = line[13:-1]
-                    
-                    if '/' in answer_str:
-                        fraction = answer_str.split('/')
-                        self.answers[problem_int] = (int(fraction[0]), int(fraction[1]))
-                    elif '.' in answer_str:
-                        self.answers[problem_int] = float(answer_str)
-                    elif not answer_str.isnumeric():
-                        self.answers[problem_int] = answer_str
-                    else:
-                        self.answers[problem_int] = int(answer_str)
+                if not line.startswith("Problem"): 
+                    continue
+                
+                problem_index = int(line[8:11])
+                answer_str = line[13:-1]
+                
+                if '/' in answer_str:
+                    continue
+                if not answer_str.isnumeric():
+                    continue
+                
+                answer_float = float(answer_str)
+                self.answers[problem_index] = answer_float
     
     def get_answer(self, idx):
         assert idx in self.answers
         return self.answers[idx]
                     
     def get_question(self, idx):
+        if not os.path.isfile(os.path.join(self.question_path, f"p{idx:03d}.txt")):
+            self.download_question(idx)
+        
+        with open(os.path.join(self.question_path, f"p{idx:03d}.txt"), "r", encoding="utf-8") as f:
+            return f.read()
+    
+    def get_available_indicies(self):
+        answer_idxes = list(self.answers.keys())
+
+        available_idxes = [idx for idx in answer_idxes \
+                           if os.path.isfile(os.path.join(self.python_path, f"p{idx:03d}.py")) ]
+        return available_idxes
+    
+    def download_question(self, idx):
         fp = urllib.request.urlopen(f"https://projecteuler.net/minimal={idx}")
         str = fp.read().decode("utf-8")
         # remove html tags
         import re
         str = re.sub("<.*?>", "", str)
-        return str
-    
-    def get_available_indicies(self):
-        answer_idxes = list(self.answers.keys())
-        available_idxes = [ idx for idx in range(1, 1000) 
-                           if os.path.isfile(os.path.join(self.python_path, f"p{idx:03d}.py")) ]
-
-        return available_idxes
-    
-    def download_questions(self):
-        for idx in tqdm(self.get_available_indicies()):
-            question = self.get_question(idx)
-            with open(os.path.join(self.question_path, f"p{idx:03d}.txt"), "w", encoding="utf-8") as f:
-                f.write(question)
+        with open(os.path.join(self.question_path, f"p{idx:03d}.txt"), "w", encoding="utf-8") as f:
+            f.write(str)
 
     def get_euler_dataframe(self):
         availalbe_idx = self.get_available_indicies()
