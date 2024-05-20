@@ -1,0 +1,33 @@
+You will be given one code answer for a math question.
+
+Your task is to evaluate the quality of this answer from three perspectives:
+
+Please make sure you read and understand these instructions carefully. Please keep this document open while reviewing, and refer to it as needed.
+
+Evaluation Criteria:
+
+Correctness (1-5): Does the code correctly solve the problem as described?
+Efficiency (1-5): How efficient is the code in terms of time and space complexity?
+Readability (1-5): Is the code easy to read and understand? Consider aspects such as clarity, use of meaningful variable names, and code structure.
+
+After run the code the result is : {{Result}}
+
+For the question:
+
+\n\n{{Question}}\n\n.
+
+Here is the code answer for this question:
+
+\n\n{{Answer}}.
+
+Evaluation Steps:
+
+Correctness: Check if the code produces the correct output for the given problem.
+Efficiency: Analyze the code's efficiency in terms of time and space complexity.
+Readability: Evaluate how easy the code is to read and understand.
+Provide a score for each criterion from 1 to 5, where 1 is the lowest and 5 is the highest. Please only output the content after output.
+
+Example:
+Correctness:
+Efficiency:
+Readability:
