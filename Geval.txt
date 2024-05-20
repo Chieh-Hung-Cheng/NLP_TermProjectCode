@@ -12,7 +12,6 @@ Efficiency: Measures the efficiency of the code in terms of time and space. This
 
 Readability:Measures how easy the code is to read and understand. This includes things like the clarity of variable names, the structure of the code, and the quality of comments. If the code is easy to read and understand, it will score high. If the code is difficult to understand or the structure is confusing, a low score should be given. Score range: 0-100.
 
-After run the code the result is : {{Result}}
 
 For the question:
 \n\n{{Answer}}.
