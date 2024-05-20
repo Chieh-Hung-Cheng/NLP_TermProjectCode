@@ -1,18 +1,19 @@
 import os
 import pandas as pd
+import numpy as np
 
 import pickle
 import urllib.request
 from tqdm import tqdm
 
 class DataProcessor: 
-    def __init__(self) -> None:
+    def __init__(self, prob=1.0) -> None:
         self.base_path = os.getcwd()
         self.data_path = os.path.join(self.base_path, "data")
         self.python_path = os.path.join(self.data_path, "python")
 
         self.answers = None
-        self.process_answers()
+        self.process_answers(prob=prob)
 
         if not os.path.isdir(os.path.join(self.data_path, "questions")):
             os.mkdir(os.path.join(self.data_path, "questions"))
@@ -28,7 +29,7 @@ class DataProcessor:
                     ret_str += line
             return ret_str 
     
-    def process_answers(self):
+    def process_answers(self, prob=1.0):
         self.answers = {}
         with open(os.path.join(self.data_path, "Answers.txt")) as f:
             for line in f:
@@ -43,8 +44,9 @@ class DataProcessor:
                 if not answer_str.isnumeric():
                     continue
                 
-                answer_float = float(answer_str)
-                self.answers[problem_index] = answer_float
+                if np.random.uniform() < prob:
+                    answer_float = float(answer_str)
+                    self.answers[problem_index] = answer_float
     
     def get_answer(self, idx):
         assert idx in self.answers
@@ -90,7 +92,7 @@ class DataProcessor:
     
 
 if __name__ == "__main__":
-    data_processor = DataProcessor()
+    data_processor = DataProcessor(prob=0.3)
     df = data_processor.get_euler_dataframe()
     # save df
     df.to_pickle("./data/euler_df.pkl")
