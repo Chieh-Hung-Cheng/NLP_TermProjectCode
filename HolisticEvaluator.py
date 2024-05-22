@@ -5,7 +5,7 @@ import pandas as pd
 from Evaluator import Evaluator
 import ProblemSetReader
 
-class PassAtKEvaluator(Evaluator):
+class HolisticEvaluator(Evaluator):
     def __init__(self):
         super().__init__()
 
@@ -27,7 +27,7 @@ class PassAtKEvaluator(Evaluator):
 
                 answer_truth = ProblemSetReader().get_answer(idx)
                 result = self.evaluate_subprocess(code_path, answer_truth, verbose)
-
+                
                 if result == "correct answer":
                     correct_found = True
                     break
