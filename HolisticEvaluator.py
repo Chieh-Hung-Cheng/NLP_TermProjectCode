@@ -25,7 +25,7 @@ class HolisticEvaluator(Evaluator):
                 if not os.path.exists(code_path):
                     continue
 
-                answer_truth = ProblemSetReader().get_answer(idx)
+                answer_truth = problem_set_df[problem_set_df["idx"] == idx]["answer"].values[0]
                 result = self.evaluate_subprocess(code_path, answer_truth, verbose)
                 
                 if result == "correct answer":
@@ -50,10 +50,10 @@ class HolisticEvaluator(Evaluator):
             print(f"Failed to parse output: {output}")
         return correctness, efficiency, readability
     
-    def Geval(self,df):
+    def Geval(self, df, generate_function, model="gpt-3.5-turbo", **generate_kwargs):
         for index, row in df.iterrows():
             prompt = row['prompt']
-            output = get_Geval_output(prompt)
+            output = generate_function(prompt, **generate_kwargs)
             correctness, efficiency, readability = self.parse_output(output)
             df.at[index, 'correctness'] = correctness
             df.at[index, 'efficiency'] = efficiency

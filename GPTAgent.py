@@ -26,9 +26,9 @@ class GPTAgent:
         ret_string = response.choices[0].message.content
         return ret_string
     
-    def generate_code(self, prompt):
+    def generate_gpt(self, prompt, model="gpt-4"):
         response = self.client.chat.completions.create(
-            model="gpt-3.5-turbo",
+            model=model,
             messages=[{"role": "user", "content": prompt}]
         )
 
