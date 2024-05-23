@@ -1,4 +1,5 @@
 import os
+import token
 import pandas as pd
 import numpy as np
 
@@ -75,7 +76,7 @@ class DataProcessor:
         with open(os.path.join(self.question_path, f"p{idx:03d}.txt"), "w", encoding="utf-8") as f:
             f.write(str)
 
-    def get_euler_dataframe(self):
+    def get_euler_dataframe(self, token_limit=None, codegen_agent=None):
         availalbe_idx = self.get_available_indicies()
         answers = [ self.get_answer(idx) for idx in availalbe_idx ]
         questions = [ self.get_question(idx) for idx in availalbe_idx ]
@@ -87,12 +88,23 @@ class DataProcessor:
             "answer": answers,
             "python_code": python_codes
         }).sort_values(by="idx")
-        return df
 
+        if token_limit is None: 
+            return df
+
+        # Retain only the ones within the limit
+        tokenizer = codegen_agent.tokenizer
+        df["num_tokens"] = df["question"].apply(lambda x: len(tokenizer(x).input_ids))
+
+        filtered = df[df["num_tokens"]<=token_limit].drop("num_tokens", axis=1)
+        filtered = filtered.reset_index(drop=True)
+        return filtered
     
 
 if __name__ == "__main__":
-    data_processor = DataProcessor(prob=0.3)
-    df = data_processor.get_euler_dataframe()
+    data_processor = DataProcessor(prob=1.0)
+    from CodeGenAgent import CodeGenAgent
+    codegen_agent = CodeGenAgent()
+    df = data_processor.get_euler_dataframe(token_limit=128, codegen_agent=codegen_agent)
     # save df
     df.to_pickle("./data/euler_df.pkl")
