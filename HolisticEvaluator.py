@@ -15,6 +15,8 @@ class HolisticEvaluator(Evaluator):
             "total_count": 0
         }
 
+        geval_idxes = []
+
         for idx in problem_set_df["idx"].values:
             correct_found = False
 
@@ -30,15 +32,18 @@ class HolisticEvaluator(Evaluator):
                 
                 if result == "correct answer":
                     correct_found = True
+                    geval_idxes.append(idx)
                     break
 
             ret_dict["total_count"] += 1
             if correct_found:
                 ret_dict["pass_at_k_count"] += 1
+            else:
+                geval_idxes.append(0)
 
         ret_dict["pass_at_k_ratio"] = ret_dict["pass_at_k_count"] / ret_dict["total_count"]
         print("Pass@K: ", ret_dict["pass_at_k_ratio"])
-        return ret_dict
+        return ret_dict, geval_idxes
     
     def parse_output(self, output):
         correctness = efficiency = readability = 0
@@ -89,7 +94,7 @@ class HolisticEvaluator(Evaluator):
 
         return prompts_df
     
-    def create_prompts_better(self,prom_template_path,answers_folder, df):
+    def create_prompts_better(self,prom_template_path,answers_folder, df, geval_idxes=None):
         with open(prom_template_path, 'r', encoding='utf-8') as Geval_file:
             prompt_template = Geval_file.read()
 
@@ -99,7 +104,10 @@ class HolisticEvaluator(Evaluator):
             question_id = row['idx']
             description = row['question']
 
-            answer_file_path = os.path.join(answers_folder, f"p{question_id:03d}_{0}.py")
+            if geval_idxes is None: 
+                answer_file_path = os.path.join(answers_folder, f"p{question_id:03d}_{0}.py")
+            else:
+                answer_file_path = os.path.join(answers_folder, f"p{question_id:03d}_{geval_idxes[index]}.py")
 
             with open(answer_file_path, 'r') as answer_file:
                 answer = answer_file.read()
