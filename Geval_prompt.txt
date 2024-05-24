@@ -12,12 +12,13 @@ Efficiency: Measures the efficiency of the code in terms of time and space. This
 
 Readability:Measures how easy the code is to read and understand. This includes things like the clarity of variable names, the structure of the code, and the quality of comments. If the code is easy to read and understand, it will score high. If the code is difficult to understand or the structure is confusing, a low score should be given. Score range: 0-5.
 
+After running the code the result is : {{Result}}\n
 
 For the question:
-{{Question}}.
+\n{{Question}}\n
 
 Here is the code answer for this question:
-{{Answer}}.
+\n{{Answer}}\n
 
 Evaluation Steps:
 Start: Initialize Correctness, Efficiency, and Readability to 100, and you should set a scoring guideline for yourself!
@@ -28,11 +29,9 @@ Efficiency: Analyze the efficiency of the code in terms of time and space comple
 
 Readability: Evaluate how easy the code is to read and understand.
 
-Provide a score for each criterion from 1 to 5, where 1 is the lowest and 5 is the highest. Do not output detail descrivetion,Do not output detail descrivetion,Please only output the content after output.
+Provide a score for each criterion from 1 to 5, where 1 is the lowest and 5 is the highest. Do not output a detail description, Please only output the content after output. 
 
 Example:
 Correctness:
 Efficiency:
 Readability:
-
-
