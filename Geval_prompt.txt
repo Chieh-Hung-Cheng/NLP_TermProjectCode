@@ -17,6 +17,8 @@ After running the code the result is : {{Result}}\n
 For the question:
 \n{{Question}}\n
 
+The correct Answer of this questation is :\n{{Truth}}\n
+
 Here is the code answer for this question:
 \n{{Answer}}\n
 

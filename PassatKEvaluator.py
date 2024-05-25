@@ -69,13 +69,14 @@ class PassAtKEvaluator(Evaluator):
         for index, row in df.iterrows():
             question_id = row['idx']
             description = row['question']
+            truth = row['answer']
 
             answer_file_path = os.path.join(answers_folder, f"p{question_id:03d}_{0}.py")
 
             with open(answer_file_path, 'r') as answer_file:
                 answer = answer_file.read()
 
-                prompt = prompt_template.replace('{{Question}}', description).replace('{{Answer}}', answer)
+                prompt = prompt_template.replace('{{Question}}', description).replace('{{Answer}}', answer).replace('{{Truth}}', truth)
                 prompts_list.append({'question_id': question_id, 'prompt': prompt})
 
             prompts_df = pd.DataFrame(prompts_list)
@@ -94,6 +95,7 @@ class PassAtKEvaluator(Evaluator):
         for index, row in df.iterrows():
             question_id = row['idx']
             description = row['question']
+            truth = row['answer']
 
             answer_file_path = os.path.join(answers_folder, f"p{question_id:03d}_{0}.py")
 
@@ -103,7 +105,7 @@ class PassAtKEvaluator(Evaluator):
                 result = self.evaluate_subprocess(answer_file_path, row['answer'])
 
                 
-                prompt = prompt_template.replace('{{Question}}', description).replace('{{Answer}}', answer).replace('{{Result}}', result)
+                prompt = prompt_template.replace('{{Question}}', description).replace('{{Answer}}', answer).replace('{{Result}}', result).replace('{{Truth}}', truth)
                 prompts_list.append({'question_id': question_id, 'prompt': prompt})
 
             prompts_df = pd.DataFrame(prompts_list)
