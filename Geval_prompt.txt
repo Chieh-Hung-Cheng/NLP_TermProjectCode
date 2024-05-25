@@ -1,6 +1,6 @@
-You will be given one code answer for a math question.
+You will be given one predicted code answer for a math question.
 
-Your task is to evaluate the quality of this answer from three perspectives:
+Your task is to evaluate the quality of this predicted answer from three perspectives:
 
 Please make sure you read and understand these instructions carefully. 
 
@@ -12,14 +12,15 @@ Efficiency: Measures the efficiency of the code in terms of time and space. This
 
 Readability:Measures how easy the code is to read and understand. This includes things like the clarity of variable names, the structure of the code, and the quality of comments. If the code is easy to read and understand, it will score high. If the code is difficult to understand or the structure is confusing, a low score should be given. Score range: 0-5.
 
-After running the code the result is : {{Result}}\n
+After running the predicted code the result is : {{Result}}\n
 
 For the question:
 \n{{Question}}\n
 
-The correct Answer of this questation is :\n{{Truth}}\n
+The ground truth Answer of this questation is:
+\n{{Truth}}\n
 
-Here is the code answer for this question:
+Here is the predicted code answer for this question:
 \n{{Answer}}\n
 
 Evaluation Steps:

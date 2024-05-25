@@ -69,7 +69,7 @@ class PassAtKEvaluator(Evaluator):
         for index, row in df.iterrows():
             question_id = row['idx']
             description = row['question']
-            truth = row['answer']
+            truth = row['python_code']
 
             answer_file_path = os.path.join(answers_folder, f"p{question_id:03d}_{0}.py")
 
@@ -95,7 +95,7 @@ class PassAtKEvaluator(Evaluator):
         for index, row in df.iterrows():
             question_id = row['idx']
             description = row['question']
-            truth = row['answer']
+            truth = row['python_code']
 
             answer_file_path = os.path.join(answers_folder, f"p{question_id:03d}_{0}.py")
 
