@@ -48,9 +48,9 @@ class HolisticEvaluator(Evaluator):
     def parse_output(self, output):
         correctness = efficiency = readability = 0
         try:
-            correctness = int(re.search(r'Correctness:\s*(\d+)', output).group(1))
-            efficiency = int(re.search(r'Efficiency:\s*(\d+)', output).group(1))
-            readability = int(re.search(r'Readability:\s*(\d+)', output).group(1))
+            correctness = int(re.search(r'\*\*Correctness\*\*: \*\*(\d+)\*\*', output).group(1))
+            efficiency = int(re.search(r'\*\*Efficiency\*\*: \*\*(\d+)\*\*', output).group(1))
+            readability = int(re.search(r'\*\*Readability\*\*: \*\*(\d+)\*\*', output).group(1))
         except AttributeError:
             print(f"Failed to parse output: {output}")
         return correctness, efficiency, readability
