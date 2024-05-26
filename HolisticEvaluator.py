@@ -55,18 +55,36 @@ class HolisticEvaluator(Evaluator):
             print(f"Failed to parse output: {output}")
         return correctness, efficiency, readability
     
-    def Geval(self, df, generate_function, **generate_kwargs):
+    # def Geval(self, df, generate_function, **generate_kwargs):
+    #     for index, row in df.iterrows():
+    #         prompt = row['prompt']
+    #         try:
+    #             output = generate_function(prompt, **generate_kwargs)
+    #             correctness, efficiency, readability = self.parse_output(output)
+    #             df.at[index, 'correctness'] = correctness
+    #             df.at[index, 'efficiency'] = efficiency
+    #             df.at[index, 'readability'] = readability
+    #         except:
+    #             print("Generation failed for prompt: ", prompt)
+    #             return df
+    #     return df
+
+    def Geval(self, df, k, generate_function, **generate_kwargs):
         for index, row in df.iterrows():
-            prompt = row['prompt']
-            try:
-                output = generate_function(prompt, **generate_kwargs)
-                correctness, efficiency, readability = self.parse_output(output)
-                df.at[index, 'correctness'] = correctness
-                df.at[index, 'efficiency'] = efficiency
-                df.at[index, 'readability'] = readability
-            except:
-                print("Generation failed for prompt: ", prompt)
-                return df
+            for i in range(k):
+                prompt = row['prompt']
+                try:
+                    output = generate_function(prompt, **generate_kwargs)
+                    correctness, efficiency, readability = self.parse_output(output)
+                    df.at[index, 'correctness'] += correctness
+                    df.at[index, 'efficiency'] += efficiency
+                    df.at[index, 'readability'] += readability
+                except:
+                    print("Generation failed for prompt: ", prompt)
+                    return df
+            df.at[index, 'correctness'] /= k
+            df.at[index, 'efficiency'] /= k
+            df.at[index, 'readability'] /= k
         return df
 
     def create_prompts(self, prom_template_path,answers_folder, df):
